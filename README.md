@@ -13,7 +13,7 @@ and Executive questions
 links and images [] [] []
 
 #### Goal 
-Translate insights to non technical stakeholder not only in a simple but also elaborately way.
+Translate insights to non technical stakeholder simply and elaborately.
 
 With 3+years experinec in Data science and analytics we dive deep for insights scientifically and logically for every  domain fit.
 Focusing on :
