@@ -36,3 +36,5 @@ Focusing on :
      - Visualisations
 4.  Using data and industry guide lines best practices
 5.  Draw insights and impacts
+
+Reach out via linkdIn [link](www.linkedin.com/in/nyakio-rosemary-68995a201)
