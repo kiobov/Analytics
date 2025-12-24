@@ -39,4 +39,4 @@ Focusing on :
 4.  Using data and industry guide lines best practices
 5.  Draw insights and impacts
 
-Reach out via linkdIn [Nyakio Rosemary](www.linkedin.com/in/nyakio-rosemary-68995a201)
+Reach out via linkdIn [Nyakio Rosemary] (www.linkedin.com/in/nyakio-rosemary-68995a201)
