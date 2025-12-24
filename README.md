@@ -1,7 +1,9 @@
 # Project domains and focus 
 
-Finance, Marketing, Product , Customer and user , Ecommerce 
-Executive questions 
+- Finance, Marketing, Product , Customer and user , Ecommerce 
+
+and Executive questions 
+
     - How much revenue is the company earning?
     - Where is the money coming from?
     - Who is spending that money?
