@@ -200,46 +200,69 @@ class OrderDataCleaner:
         """
         Clean Local Price column:
         1. Handle missing values
-        2. Fix negative prices (data entry errors - make absolute)
-        3. Handle outliers (prices < $1 or > $5000)
+        2. Flag negative prices for management review
+        3. Handle suspiciously low prices (< $1)
         4. Handle zero prices
+        5. Keep high prices (valid high-end products)
         """
 
         # Convert to numeric
         self.df['Local Price'] = pd.to_numeric(self.df['Local Price'], errors='coerce')
+        
+        # Initialize flag column for tracking data quality issues
+        if 'Price_Flag' not in self.df.columns:
+            self.df['Price_Flag'] = ''
 
         # Log missing prices
         missing_prices = self.df['Local Price'].isna().sum()
-        self.log_action("Missing prices", missing_prices, "Will be handled based on product")
+        self.log_action("Missing prices", missing_prices, "Will be imputed with product median")
 
-        # Handle NEGATIVE prices (data entry error - make absolute)
-        negative_prices = (self.df['Local Price'] < 0).sum()
-        if negative_prices > 0:
-            self.log_action("Negative prices", negative_prices, "Converted to absolute value")
-            self.df['Local Price'] = self.df['Local Price'].abs()
+        # Handle NEGATIVE prices - FLAG for management review
+        negative_mask = self.df['Local Price'] < 0
+        if negative_mask.sum() > 0:
+            self.df.loc[negative_mask, 'Price_Flag'] = 'NEGATIVE_PRICE_REVIEW'
+            
+            self.log_action("Negative prices FLAGGED", negative_mask.sum(), 
+                           "Exported for management review - could be refunds or errors")
+            
+            # Export flagged records for review
+            flagged = self.df[negative_mask][['Order Id', 'Product Name', 'Local Price', 
+                                              'User Id', 'Purchase Ts']].copy()
+            flagged.to_csv('REVIEW_Negative_Prices.csv', index=False)
+            print(f"  {negative_mask.sum()} negative prices exported to REVIEW_Negative_Prices.csv")
+            
+            # Set to NaN for imputation
+            self.df.loc[negative_mask, 'Local Price'] = np.nan
 
         # Handle ZERO prices (likely errors)
-        zero_prices = (self.df['Local Price'] == 0).sum()
-        if zero_prices > 0:
-            self.log_action("Zero prices", zero_prices, "Will be imputed based on product median")
+        zero_mask = self.df['Local Price'] == 0
+        if zero_mask.sum() > 0:
+            self.df.loc[zero_mask, 'Price_Flag'] = 'ZERO_PRICE'
+            self.log_action("Zero prices", zero_mask.sum(), "Will be imputed with product median")
+            self.df.loc[zero_mask, 'Local Price'] = np.nan
 
-        # Handle EXTREME OUTLIERS (< $1 or > $5000)
-        low_outliers = ((self.df['Local Price'] > 0) & (self.df['Local Price'] < 1)).sum()
-        high_outliers = (self.df['Local Price'] > 5000).sum()
+        # Handle SUSPICIOUSLY LOW prices (< $1, like $0.01)
+        low_mask = (self.df['Local Price'] > 0) & (self.df['Local Price'] < 1)
+        if low_mask.sum() > 0:
+            self.df.loc[low_mask, 'Price_Flag'] = 'SUSPICIOUSLY_LOW'
+            self.log_action("Suspiciously low prices (<$1)", low_mask.sum(), 
+                           "Set to NaN for imputation with product median")
+            self.df.loc[low_mask, 'Local Price'] = np.nan
 
-        if low_outliers > 0:
-            self.log_action("Unrealistically low prices (<$1)", low_outliers, "Set to NaN for imputation")
-            self.df.loc[(self.df['Local Price'] > 0) & (self.df['Local Price'] < 1), 'Local Price'] = np.nan
-
-        if high_outliers > 0:
-            self.log_action("Unrealistically high prices (>$5000)", high_outliers, "Set to NaN for imputation")
-            self.df.loc[self.df['Local Price'] > 5000, 'Local Price'] = np.nan
+        # HIGH PRICES (>$5000) - NO ACTION, KEEP AS-IS
+        # These are valid high-end products
+        high_count = (self.df['Local Price'] > 5000).sum()
+        if high_count > 0:
+            self.log_action("High-value sales (>$5000)", high_count, 
+                           "Kept as-is - legitimate high-end products")
 
         # IMPUTE missing/invalid prices based on product median
         self.impute_prices_by_product()
 
         # Create clean price column
         self.df['USD_Price_clean'] = self.df['Local Price'].round(2)
+        
+        print(f" Price cleaning complete. Check Price_Flag column for any flagged records.")
 
     def impute_prices_by_product(self):
         """Replace missing/invalid prices with product median price"""
@@ -390,6 +413,30 @@ class OrderDataCleaner:
         for product, count in self.df['Product Name'].value_counts().items():
             report.append(f"  {product}: {count:,} orders")
 
+        # Add flagged records section
+        if 'Price_Flag' in self.df.columns:
+            report.append("\n" + "=" * 80)
+            report.append("FLAGGED RECORDS REQUIRING MANAGEMENT REVIEW")
+            report.append("=" * 80)
+            
+            flag_counts = self.df['Price_Flag'].value_counts()
+            flagged_total = self.df[self.df['Price_Flag'] != ''].shape[0]
+            
+            if flagged_total > 0:
+                report.append(f"\nTotal records flagged for review: {flagged_total:,}\n")
+                report.append("Breakdown by flag type:")
+                for flag, count in flag_counts.items():
+                    if flag != '':
+                        report.append(f"  {flag}: {count:,} records")
+                
+                report.append("\nACTION REQUIRED:")
+                report.append("  - Review REVIEW_Negative_Prices.csv for negative price records")
+                report.append("  - Determine if these are refunds, returns, or data entry errors")
+                report.append("  - All flagged prices have been temporarily imputed with product median")
+                report.append("  - Update prices manually if needed after review")
+            else:
+                report.append("\n No records flagged for review - all prices appear valid")
+
         report_text = "\n".join(report)
 
         # Save to file
@@ -481,7 +528,7 @@ class FeatureEngineer:
         """
         
         if 'Purchase Ts' not in self.df.columns:
-            print(" 'Purchase Ts' column not found. Skipping time features.")
+            print("'Purchase Ts' column not found. Skipping time features.")
             return
         
         # Convert to datetime
