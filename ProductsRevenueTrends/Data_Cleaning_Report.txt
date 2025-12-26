@@ -1,0 +1,143 @@
+================================================================================
+PIXELFORGE GAMING CO. - DATA CLEANING REPORT
+================================================================================
+
+Total Records: 97,148
+
+Cleaning Actions Performed:
+
+1. Handle missing regions
+   Records Affected: 2,974
+   Details: Replaced with 'Unknown'
+
+2. Generate missing Order IDs
+   Records Affected: 1,929
+
+3. Generate missing Product IDs
+   Records Affected: 1,035
+
+4. Generate missing User IDs
+   Records Affected: 1,942
+
+5. Missing prices
+   Records Affected: 1,437
+   Details: Will be handled based on product
+
+6. Negative prices
+   Records Affected: 475
+   Details: Converted to absolute value
+
+7. Zero prices
+   Records Affected: 5
+   Details: Will be imputed based on product median
+
+8. Unrealistically low prices (<$1)
+   Records Affected: 172
+   Details: Set to NaN for imputation
+
+9. Unrealistically high prices (>$5000)
+   Records Affected: 160
+   Details: Set to NaN for imputation
+
+10. Imputed prices for 27in 4K Gaming Monitor
+   Records Affected: 224
+   Details: Used median: $527.62
+
+11. Imputed prices for Dell Gaming Laptop
+   Records Affected: 235
+   Details: Used median: $1719.70
+
+12. Imputed prices for Dell Gaming Mouse
+   Records Affected: 208
+   Details: Used median: $64.81
+
+13. Imputed prices for External Storage 1TB
+   Records Affected: 217
+   Details: Used median: $117.67
+
+14. Imputed prices for Logitech Gaming Headset
+   Records Affected: 212
+   Details: Used median: $104.47
+
+15. Imputed prices for Microsoft Xbox Series X
+   Records Affected: 231
+   Details: Used median: $659.66
+
+16. Imputed prices for Nintendo Switch
+   Records Affected: 232
+   Details: Used median: $394.68
+
+17. Imputed prices for PlayStation 5
+   Records Affected: 210
+   Details: Used median: $661.03
+
+18. Duplicate records removed
+   Records Affected: 2,852
+   Details: Kept first occurrence
+
+19. Invalid dates in Purchase Ts
+   Records Affected: 936
+   Details: Converted to NaN
+
+20. Invalid dates in Created On
+   Records Affected: 4,821
+   Details: Converted to NaN
+
+21. Invalid dates in Ship Ts
+   Records Affected: 3,851
+   Details: Converted to NaN
+
+22. Invalid dates in Delivery Ts
+   Records Affected: 5,796
+   Details: Converted to NaN
+
+23. Invalid dates in Refund Ts
+   Records Affected: 92,216
+   Details: Converted to NaN
+
+================================================================================
+DATA QUALITY SUMMARY
+================================================================================
+
+Price Statistics:
+  Min Price: $0.00
+  Max Price: $4355.55
+  Median Price: $443.37
+  Mean Price: $577.99
+
+Product Distribution:
+  External Storage 1TB: 12,291 orders
+  Dell Gaming Mouse: 12,252 orders
+  PlayStation 5: 12,229 orders
+  Microsoft Xbox Series X: 12,166 orders
+  Logitech Gaming Headset: 12,124 orders
+  27in 4K Gaming Monitor: 12,121 orders
+  Nintendo Switch: 12,038 orders
+  Dell Gaming Laptop: 11,927 orders
+
+================================================================================
+FEATURE ENGINEERING REPORT
+================================================================================
+
+New Columns Created for Analysis:
+
+1. Created time-based features
+   Records Affected: 96,212
+   Details: Purchase_Year, Purchase_Month, Purchase_Quarter, Year_Month
+
+2. Calculated Delivery_Days
+   Records Affected: 87,729
+   Details: Average: 4.1 days
+
+3. Created Is_Refunded flag
+   Records Affected: 4,932
+   Details: Refund rate: 5.08%
+
+
+New Columns Added:
+  - Purchase_Year
+  - Purchase_Month
+  - Purchase_Quarter
+  - Year_Month
+  - Delivery_Days
+  - Is_Refunded
