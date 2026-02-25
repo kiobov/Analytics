@@ -70,6 +70,7 @@ class OrderDataCleaner:
             .replace("", "Unknown")
         )
 
+        
         self.df["AccountCreationMethod_clean"] = (
             self.df["Account Creation Method"]
             .apply(self.normalize)
@@ -133,6 +134,12 @@ class OrderDataCleaner:
             .apply(self.normalize)
             .str.upper()
             .replace(product_map)
+        )
+
+        self.df["Product Name_clean"] = (
+            self.df["Product Name"]
+            .apply(self.normalize)
+            .replace("", "Unknown")
         )
 
     # ---------- marketing channels & platforms ----------
