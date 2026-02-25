@@ -84,6 +84,6 @@ Youtube Presentations
     [Refund Rate Link](https://youtu.be/i5Bif0ocDdw)
 
 Folder 
-Data - both clean and original data (note: the cleaner version has been manipulated expeditiously using pandas python and excel a recording would mixed up everything therefore chose to leave it aside and post tableau visualisation and dashboard presentation)
+Data(in Business Intelligence Analyst folder) - both clean and original data (note: the cleaner version has been manipulated expeditiously using pandas python and excel a recording would mixed up everything therefore chose to leave it aside and post tableau visualisation and dashboard presentation)
 
-Detailed methodology and findings are documented in each subfolder README.
+Detailed methodology and findings are documented in each subfolder Business Intelligence Analyst README.
