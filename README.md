@@ -1,11 +1,11 @@
-#Business Intelligence Analytics Portfolio
+# Business Intelligence Analytics Portfolio
 Jupyter , Python , SQL , Excel,  Tableau
 
 ### What has the prject achieved
  It takes vague business problem, investigates them independently, and delivers findings that drive decisions
  
 
-What This Project Is
+#### What This Project Is
 With 35,000+ e-commerce orders spanning 6 regions, 27 marketing channels, and 6 years of data.
     Different stakeholder questions from board and technical teams. 
     Two full investigations. 
