@@ -29,7 +29,7 @@ The result: three answered business questions, Tableau and plotly dashboards, a 
 | Revenue across 5 months | $6.35M |
 | Customers scored by churn model | 72,225 |
 | Churn model AUC | 0.783 |
-| Recoverable revenue identified | ~$1.2M/yr |
+| Recoverable revenue identified | $1.2M/yr |
 
 
 ## The Story
@@ -43,7 +43,7 @@ which showed that 70% of customers who added something to their cart never bough
 | 1 | 70% cart abandonment in December | Is this every month, or just December? |
 | 2 | Same rate across all 5 months | Which products are bleeding the most money? |
 | 3 | November revenue spiked +26%, then December crashed | Why? Prices didn't change. Conversion didn't change. |
-| 4 | Black Friday pulled demand forward — December just ran out of buyers | Can we predict which customers are about to churn? |
+| 4 | Black Friday pulled demand forward December just ran out of buyers | Can we predict which customers are about to churn? |
 | 5 | 80–90% of first month buyers never return | Can we score all 72K customers for risk? |
 | 6 | Random Forest model hits AUC 0.783 | What does revenue actually look like next quarter? |
 | 7 | Prophet forecast: flat at $1.2M/month no organic growth | What should the business actually do about all of this? |
@@ -59,12 +59,12 @@ Several charts built for a non-technical stakeholder audience. Each one answers 
 
 | # | Dashboard | What It Shows |
 |---|---|---|
-| 1 | **Monthly Revenue & Buyers** | $6.35M broken down month by month — with the Black Friday spike visible |
+| 1 | **Monthly Revenue & Buyers** | $6.35M broken down month by month with the Black Friday spike visible |
 | 2 | **Conversion Funnel** | Where in the journey customers drop off (answer: cart to purchase) |
 | 3 | **Cart Abandonment by Brand** | Which products lose the most revenue at the checkout stage |
 | 4 | **Cohort Retention Heatmap** | Only 8–18% of buyers return after their first month |
-| 5 | **Top Brand Revenue** | grattol up 46%, runail down 21% — who's winning and losing |
-| 6 | **Conversion by Hour** | 9–12am peak, especially Thursdays — when to run campaigns |
+| 5 | **Top Brand Revenue** | grattol up 46%, runail down 21% who's winning and losing |
+| 6 | **Conversion by Hour** | 9–12am peak, especially Thursdays when to run campaigns |
 | 7 | **Purchase Decision Timeline** | 32% of buyers decide within 24 hours of first view |
 | 8 | **Revenue vs. Buyers Trend** | Why November's buyer surge drove all the revenue growth |
 
@@ -109,14 +109,14 @@ The two most predictive features weren't spend they were **loyalty signals**:
 | Churners correctly flagged | 9,368 of 12,209 (76.7%) |
 | Industry threshold for production use | >0.70 |
 
-### Churn Risk Tiers — What to Do with Them
+### Churn Risk Tiers - What to Do with Them
 
 | Tier | Customers | Churn Probability | Revenue at Risk | Action |
 |---|---|---|---|---|
 | Very Low Risk | 14,660 | 25% | $1.64M | Protect with loyalty programme |
 | Low Risk | 15,074 | 50% | $674K | Monitor, light re-engagement |
-| **Medium Risk** | **19,623** | **69%** | **$897K** | **→ Target first: still reachable** |
-| High Risk | 22,868 | 80% | $613K | Low-cost automated email only |
+| **Medium Risk** | **19,623** | **69%** | **$897K** | ** Target first: still reachable** |
+| High Risk | 22,868 | 80% | $613K | Low cost automated email only |
 
 
 ![alt text](images/churnpredandrevenueforecast1.jpg)
@@ -177,7 +177,7 @@ Raw Data (5 CSV files, 20.7M rows)
          │
          ▼
     DuckDB SQL Engine
-  (queries directly on DataFrames — no database setup)
+  (queries directly on DataFrames without a database setup)
          │
     ┌────┴─────────────────────┐
     ▼                          ▼
@@ -244,7 +244,7 @@ Ranked by revenue impact and implementation effort:
 
 | File | What It Is |
 |---|---|
-| `Notebook.ipynb` | Main notebook — all SQL, analysis, modelling, and charts |
+| `Notebook.ipynb` | Main notebook - all SQL, analysis, modelling, and charts |
 | `performancedashboard.html` | Interactive 8-chart stakeholder dashboard (open in browser) |
 | `churn pred & revenue forecast.html` | Churn + forecast combined model summary |
 | `2019-Oct.csv` to `2020-Feb.csv` | Raw data (sourced from Kaggle, loaded via Google Drive) |
@@ -256,7 +256,7 @@ Ranked by revenue impact and implementation effort:
 | Tool | Used For |
 |---|---|
 | **Python** | Everything |
-| **DuckDB** | SQL queries directly on pandas DataFrames — no database setup |
+| **DuckDB** | SQL queries directly on pandas DataFrames - no database setup |
 | **pandas** | Data loading, merging, preprocessing |
 | **scikit-learn** | Random Forest classifier, cross-validation |
 | **Facebook Prophet** | Time series decomposition and forecasting |
@@ -278,8 +278,8 @@ Ranked by revenue impact and implementation effort:
 
 ## Data Source
 
-[eCommerce Events History in Cosmetics Shop](https://www.kaggle.com/datasets/mkechinov/ecommerce-events-history-in-cosmetics-shop) — Kaggle  
-152 days · 20,692,840 events · Oct 2019 – Feb 2020
+[eCommerce Events History in Cosmetics Shop](https://www.kaggle.com/datasets/mkechinov/ecommerce-events-history-in-cosmetics-shop) Kaggle  
+152 days · 20,692,840 events · Oct 2019-Feb 2020
 
 ---
 
